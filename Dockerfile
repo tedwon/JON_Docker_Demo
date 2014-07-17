@@ -77,4 +77,4 @@ EXPOSE 7080
 CMD $HOME/startJON.sh
 
 # Build command -> docker build --rm -t psteiner/jon .
-# run command -> docker run  -p 49380:8080 -d psteiner/jon
+# run command -> docker run  -p 7080:7080 -d psteiner/jon
