@@ -44,8 +44,8 @@ RUN echo "export RHQ_JAVA_HOME=\"/usr/lib/jvm/jre\" " >> /etc/profile
 ############################################
 # Copy artifacts needed for the Heise_Demo
 ############################################
-RUN unzip $HOME/tmp/*.zip -d $HOME/tmp
-RUN cp $HOME/tmp/rhq-server.properties $HOME/tmp/jon-server-3.2.0.GA/bin/rhq-server.properties;
+RUN unzip $HOME/tmp/*.zip -d /opt/jon;
+RUN cp $HOME/tmp/rhq-server.properties /opt/jon/jon-server-3.2.0.GA/bin/rhq-server.properties; mv $HOME/tmp/pgpass $HOME/.pgpass; chmod 0600 $HOME/.pgpass; mv $HOME/tmp/startJON.sh $HOME; chmod +x $HOME/startJON.sh;
 RUN chown -R postgres:postgres $HOME
 
 #############################################
@@ -62,16 +62,19 @@ RUN $PGINST/bin/pg_ctl start -w -D $PGDATA && \
 USER root
 RUN cp $HOME/tmp/pg_hba.conf /var/lib/pgsql/9.3/data/pg_hba.conf
 
-USER postgres
-RUN $PGINST/bin/pg_ctl start -w -D $PGDATA; $HOME/tmp/jon-server-3.2.0.GA/bin/rhqctl install --start  
+#############################################
+# Cleanup
+#############################################
+RUN rm -rf $HOME/tmp
 
-EXPOSE 5432
+#############################################
+# Trigger installation of JON
+#############################################
+# RUN service postgresql-9.3 start; /opt/jon/jon-server-3.2.0.GA/bin/rhqctl install --start  
 
-USER root
-RUN cp $HOME/tmp/pg_hba.conf /var/lib/pgsql/9.3/data/pg_hba.conf
+EXPOSE 7080
 
-
-# CMD $HOME/postgresql-populate-bam-data.sh
+CMD $HOME/startJON.sh
 
 # Build command -> docker build --rm -t psteiner/jon .
-# run command -> docker run  -p 49380:5432 -d psteiner/jon
+# run command -> docker run  -p 49380:8080 -d psteiner/jon
