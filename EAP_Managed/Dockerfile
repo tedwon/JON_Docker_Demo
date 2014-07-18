@@ -13,12 +13,11 @@ ENV RHQ_JAVA_HOME /usr/lib/jvm/jre
    
 ADD . $HOME/tmp/
 RUN java -jar $HOME/tmp/rhq-enterprise-agent-4.9.0.JON320GA.jar --install=$HOME/jon
-#RUN cp $HOME/tmp/agent-configuration.xml $HOME/jon/rhq-agent/conf/agent-configuration.xml 
-RUN chown -R jbosseap:jbosseap $HOME; 
+RUN chown -R jbosseap:jbosseap $HOME; chmod u+x $HOME/tmp/starterScript.sh
 
 USER jbosseap
 
-# CMD $HOME/eap/jboss-eap-6.1/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
+CMD $HOME/tmp/starterScript.sh
 
 EXPOSE 8080 9990
 
