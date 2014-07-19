@@ -14,8 +14,14 @@ RUN yum -y update; yum -y install java-1.7.0-openjdk java-1.7.0-openjdk-devel; y
 # Set required environment variables
 ##############################################
 ENV HOME /home/jbosseap
+ENV JAVA_HOME /usr/lib/jvm/jre
 ENV RHQ_JAVA_HOME /usr/lib/jvm/jre
 ENV INSTALL_FILE $HOME/tmp/rhq-enterprise-agent-4.9.0.JON320GA.jar
+
+##############################################
+# Set root password
+##############################################
+RUN echo "root:redhat" | /usr/sbin/chpasswd
    
 ##############################################
 # Transfer files from host
