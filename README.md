@@ -13,3 +13,9 @@ This image consists - at the moment - of three images
 * JBoss EAP Managed ( with JON Agent )
 
 Details on how to build and start the images, please refer to the Readme's of the associated subdirectories.
+
+Template Directory
+------------------
+
+I have added a special directory `managedTemplate` which does not represent a running image, but the basis for 
+you to create your own images.
