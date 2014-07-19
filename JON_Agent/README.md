@@ -1,4 +1,4 @@
-Red Hat JBoss Operations Network - JON Agent
+Red Hat JBoss Operations Network - Agent image
 ==============================================
 
 Building the Docker image
@@ -35,16 +35,16 @@ This will do the following things:
  Feel free to change any of the parameter to your liking, but please only if you know what
  you are doing.
 
- How the image works
- -------------------
+How the image works
+-------------------
  
- The `Dockerfile` is designed in a way that at every new start of a container, the JON Agent is started.
- This brings you a fresh environment at every new start.
+The `Dockerfile` is designed in a way that at every new start of a container, the JON Agent is started.
+This brings you a fresh environment at every new start.
 
- If you want it any other way, please feel free to create a pull-request.
+If you want it any other way, please feel free to create a pull-request.
 
- Linking other applications to start
- -----------------------------------
+Linking other applications to start
+-----------------------------------
 
 In this version of the `Dockerfile` the `CMD` argument starts a shell-script called `masterControlScript.sh`. This script starts the fresh version of the JON agent and then calls a script named `appStarterScript.sh`. In this repo the script just runs an endless loop. If you want to run any other app, please feel free to patch `appStarterScript.sh` to you liking, but please be aware that the script should not end, as this will cause the
 container to stop.
