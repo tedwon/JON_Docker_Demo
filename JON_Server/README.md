@@ -14,13 +14,17 @@ You will find them at:
 Please note, that you might have to register with the Red Hat customer portal to access the downloads.
 
 After having downloaded the two zip-files, place them into the `JON_Docker_Demo/JON_Server` directory and run
-```docker build --rm -t psteiner/jon .```
+```
+docker build --rm -t psteiner/jon .
+```
 
 Starting the Docker image
 -------------------------
 
 To start the image, please us the following command
-```docker run  -p 7080:7080 -h jon --name jon -d psteiner/jon```
+```
+docker run  -p 7080:7080 -h jon --name jon -d psteiner/jon
+```
 
 This will do the following things:
 
@@ -37,7 +41,7 @@ This will do the following things:
 
  How the image works
  -------------------
- The `Dockerfile` is build in a way that at every new start of a container, the JON installation is started.
+ The `Dockerfile` is designed in a way that at every new start of a container, the JON installation is started.
  This brings you a fresh environment at every new start.
 
  If you want it any other way, please feel free to create a pull-request.
