@@ -44,7 +44,8 @@ RUN echo "export RHQ_JAVA_HOME=\"/usr/lib/jvm/jre\" " >> /etc/profile
 ############################################
 # Copy artifacts needed for the Heise_Demo
 ############################################
-RUN unzip $HOME/tmp/*.zip -d /opt/jon;
+RUN unzip $HOME/tmp/jon-server*.zip -d /opt/jon;
+RUN unzip $HOME/tmp/jon-plugin*.zip -d $HOME/tmp; rm $HOME/tmp/jon-plugin*.zip; cp $HOME/tmp/jon-plugin*/* opt/jon/jon-server-3.2.0.GA/plugins/
 RUN cp $HOME/tmp/rhq-server.properties /opt/jon/jon-server-3.2.0.GA/bin/rhq-server.properties; mv $HOME/tmp/pgpass $HOME/.pgpass; chmod 0600 $HOME/.pgpass; mv $HOME/tmp/startJON.sh $HOME; chmod +x $HOME/startJON.sh;
 RUN chown -R postgres:postgres $HOME
 
@@ -65,7 +66,7 @@ RUN cp $HOME/tmp/pg_hba.conf /var/lib/pgsql/9.3/data/pg_hba.conf
 #############################################
 # Cleanup
 #############################################
-RUN rm -rf $HOME/tmp
+# RUN rm -rf $HOME/tmp
 
 #############################################
 # Trigger installation of JON
