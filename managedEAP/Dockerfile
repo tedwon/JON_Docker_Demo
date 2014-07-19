@@ -32,4 +32,4 @@ CMD $HOME/tmp/masterControlScript.sh
 EXPOSE 8080 9990
 
 # Build command -> docker build --rm -t psteiner/managed_eap .
-# run command -> docker run -p 49160:8080 -p 49170:9990 -d psteiner/managed_eap
+# run command -> docker run --link jon:jon  -d psteiner/managed_eap
