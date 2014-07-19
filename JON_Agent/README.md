@@ -1,4 +1,4 @@
-Red Hat JBoss Operations Network - Agent image
+Red Hat JBoss Operations Network - Agent image	
 ==============================================
 
 Building the Docker image
@@ -32,8 +32,8 @@ This will do the following things:
 
  * link this image to the already running Red Hat JBoss Operations Network container
 
- Feel free to change any of the parameter to your liking, but please only if you know what
- you are doing.
+Feel free to change any of the parameter to your liking, but please only if you know what
+you are doing.
 
 How the image works
 -------------------
