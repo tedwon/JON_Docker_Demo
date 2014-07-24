@@ -29,7 +29,7 @@ RUN /usr/bin/unzip -q $HOME/tmp/jboss-eap-6.1.*.zip -d $HOME/eap && \
 
 CMD $HOME/tmp/masterControlScript.sh 
 
-EXPOSE 8080 9990
+EXPOSE 8080 9990 16163
 
 # Build command -> docker build --rm -t psteiner/managed_eap .
 # run command -> docker run --link jon:jon  -d psteiner/managed_eap

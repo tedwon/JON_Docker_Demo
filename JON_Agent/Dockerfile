@@ -49,7 +49,7 @@ RUN chown -R jbosseap:jbosseap $HOME; chmod u+x $HOME/tmp/*.sh
 ##################################################
 CMD $HOME/tmp/masterControlScript.sh
 
-EXPOSE 8080 9990
+EXPOSE 8080 9990 16163
 
 # Build command -> docker build --rm -t psteiner/jonagent .
 # run command -> docker run -p 49160:8080 -p 49170:9990 --link jon:jon -d psteiner/jonagent
