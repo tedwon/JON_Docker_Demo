@@ -18,4 +18,5 @@ CMD $HOME/tmp/masterControlScript.sh
 EXPOSE 8080 9990 16163 9999
 
 # Build command -> docker build --rm -t wrichter/managed_eap62cluster_slave .
-# run command -> docker run --link jon:jon --link master:master -d wrichter/managed_eap62cluster_slave
+# run command -> docker run --link jon:jon --link master:master -h slave1 --name slave1 -d wrichter/managed_eap62cluster_slave
+

@@ -34,4 +34,4 @@ CMD $HOME/tmp/masterControlScript.sh
 EXPOSE 80 6666
 
 # Build command -> docker build --rm -t wrichter/managed_httpd .
-# run command -> docker run --link jon:jon -p 80:80 -p 6666:6666 -d wrichter/managed_httpd
+# run command -> docker run --link jon:jon -h httpd --name httpd -p 80:80 -p 6666:6666 -d wrichter/managed_httpd

@@ -1,23 +1,45 @@
-Red Hat JBoss Operations Network - Template
+Red Hat JBoss Operations Network - HTTPD Managed	
 ==============================================
 
-This directory contains two files, which you can/should use if
-you want to create your own JON-managed images.
+Building the Docker image
+-------------------------
 
-Dockerfile
-----------
+To be able to build the image, you will have to create the [JON-Agent Image](https://github.com/PatrickSteiner/JON_Docker_Demo/tree/master/JON_Agent) and download [Red Hat JBoss EAP webserver native components](https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=26553&product=appplatform) for your platform.
 
-You can do whatever you please with this file, but you should leave the following line
+Please note, that you might have to register with the Red Hat customer portal to access the downloads.
 
+After having downloaded the zip-file, please copy it into the `JON_Docker_Demo/managedHTTPD` directory and run
 ```
-CMD $HOME/tmp/masterControlScript.sh
+docker build --rm -t wrichter/managed_httpd .
 ```
 
-appStarterScript
----------------
+Starting the Docker image
+-------------------------
 
-This script will be called from `masterControlScript.sh` after the JON-Agent has been 
-started.
+To start the image, please us the following command
+```
+docker run --link jon:jon -h httpd --name httpd -p 80:80 -p 6666:6666 -d wrichter/managed_httpd
+```
 
-You can do in this script whatever you have to do to start your application, but please be aware that it should
-not run in deamon mode as a termination of this script also terminates the container.
+This will do the following things:
+
+ * start the image
+
+ * start a fresh version of the JON agent
+
+ * link this image to the already running Red Hat JBoss Operations Network container
+
+ * start HTTPD via `appStarterScript.sh`
+
+Feel free to change any of the parameter to your liking, but please only if you know what
+you are doing.
+
+HTTPD should be started before EAP cluster members.
+
+How the image works
+-------------------
+ 
+The `Dockerfile` is designed in a way that at every new start of a container, the JON Agent is started.
+This brings you a fresh environment at every new start.
+
+If you want it any other way, please feel free to create a pull-request.
