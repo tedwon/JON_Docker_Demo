@@ -45,7 +45,9 @@ RUN echo "export RHQ_JAVA_HOME=\"/usr/lib/jvm/jre\" " >> /etc/profile
 # Copy artifacts needed for the Heise_Demo
 ############################################
 RUN unzip $HOME/tmp/jon-server*.zip -d /opt/jon;
-RUN unzip $HOME/tmp/jon-plugin*.zip -d $HOME/tmp; rm $HOME/tmp/jon-plugin*.zip; cp $HOME/tmp/jon-plugin*/* opt/jon/jon-server-3.2.0.GA/plugins/
+RUN unzip $HOME/tmp/jon-plugin-pack-eap-3.2.0.GA.zip -d $HOME/tmp; rm $HOME/tmp/jon-plugin-pack-eap-3.2.0.GA.zip; cp $HOME/tmp/jon-plugin-pack-eap-3.2.0.GA/* opt/jon/jon-server-3.2.0.GA/plugins/
+# RUN unzip $HOME/tmp/jon-plugin-pack-jdg-3.2.0.GA.zip -d $HOME/tmp; rm $HOME/tmp/jon-plugin-pack-jdg-3.2.0.GA.zip; cp $HOME/tmp/jon-plugin-pack-jdg-3.2.0.GA/* opt/jon/jon-server-3.2.0.GA/plugins/
+RUN rm -rf $HOME/tmp/jon-plugin*
 RUN cp $HOME/tmp/rhq-server.properties /opt/jon/jon-server-3.2.0.GA/bin/rhq-server.properties; mv $HOME/tmp/pgpass $HOME/.pgpass; chmod 0600 $HOME/.pgpass; mv $HOME/tmp/startJON.sh $HOME; chmod +x $HOME/startJON.sh;
 RUN chown -R postgres:postgres $HOME
 
