@@ -32,7 +32,7 @@ This will do the following things:
  * start HTTPD via `appStarterScript.sh`
 
 Feel free to change any of the parameter to your liking, but please only if you know what
-you are doing. The http port and the mod_cluster control port is made available on the docker host, the former as port 80 and the latter as port 7081 (since both chrome and safari refuse to connect to the obviously evil port 6666).
+you are doing. The http port and the mod_cluster control port is made available on the docker host, the former as port 80 and the latter as port 7081 (since both chrome and safari refuse to connect to the obviously evil port 6666). You can access the mod_cluster_manager by navigating your browser to [http://docker.host.address:7081/mod_cluster_manager].
 
 HTTPD should be started before EAP cluster members.
 
