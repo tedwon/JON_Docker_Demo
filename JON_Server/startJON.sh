@@ -8,12 +8,14 @@ export RHQ_SERVER_HOME="/opt/jon/jon-server-3.2.0.GA"
 
 service postgresql-9.3 start
 
-$RHQ_SERVER_HOME/bin/rhqctl install --start
+if [ ! -f $RHQ_SERVER_HOME/is.installed ]; then
+  $RHQ_SERVER_HOME/bin/rhqctl install
+  touch $RHQ_SERVER_HOME/is.installed
+else
+  $RHQ_SERVER_HOME/bin/rhqctl stop
+fi
 
-# endless loop, as I do not have any other idea how to prevent the docker
-# container to stop
-for (( ; ; ))
-do
-   sleep 10000
-done
 
+$RHQ_SERVER_HOME/bin/rhqctl start --storage
+$RHQ_SERVER_HOME/bin/rhqctl start --agent
+$RHQ_SERVER_HOME/bin/rhqctl console --server

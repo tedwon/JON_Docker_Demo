@@ -5,7 +5,7 @@ MAINTAINER psteiner <psteiner@redhat.com>
 
 ENV JAVA_HOME /usr/lib/jvm/jre
 ENV RHQ_JAVA_HOME /usr/lib/jvm/jre
-ENV PGDATA /var/lib/pgsql/9.3/data
+ENV PGDATA /var/lib/pgsql/9.3/jon-data
 ENV PGINST /usr/pgsql-9.3
 ENV HOME /home/postgres
 
@@ -19,7 +19,8 @@ RUN yum -y update;yum clean all
 ###########################################################################
 RUN yum -y install http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm
 RUN yum -y install postgresql93-server postgresql93-contrib sudo unzip java-1.7.0-openjdk java-1.7.0-openjdk-devel; yum clean all
-RUN service postgresql-9.3 initdb
+RUN echo PGDATA=$PGDATA > /etc/sysconfig/pgsql/postgresql-9.3
+RUN ["service","postgresql-9.3","initdb"]
 
 ############################################
 # Adjust PostgreSQL configuration so that remote connections to the
@@ -34,20 +35,18 @@ RUN echo "" >> $PGDATA/postgresql.conf
 RUN usermod -d $HOME postgres
 
 
-############################################
-# Copy artifacts needed for the Heise_Demo
-############################################
-RUN mkdir $HOME; mkdir $HOME/tmp 
+# Copy local artifacts to docker tmp-directory
+RUN mkdir $HOME; mkdir $HOME/tmp
 ADD . $HOME/tmp
+
 RUN echo "export RHQ_JAVA_HOME=\"/usr/lib/jvm/jre\" " >> /etc/profile
 
-############################################
-# Copy artifacts needed for the Heise_Demo
-############################################
 RUN unzip $HOME/tmp/jon-server*.zip -d /opt/jon;
 RUN unzip $HOME/tmp/jon-plugin-pack-eap-3.2.0.GA.zip -d $HOME/tmp; rm $HOME/tmp/jon-plugin-pack-eap-3.2.0.GA.zip; cp $HOME/tmp/jon-plugin-pack-eap-3.2.0.GA/* opt/jon/jon-server-3.2.0.GA/plugins/
 # RUN unzip $HOME/tmp/jon-plugin-pack-jdg-3.2.0.GA.zip -d $HOME/tmp; rm $HOME/tmp/jon-plugin-pack-jdg-3.2.0.GA.zip; cp $HOME/tmp/jon-plugin-pack-jdg-3.2.0.GA/* opt/jon/jon-server-3.2.0.GA/plugins/
 RUN rm -rf $HOME/tmp/jon-plugin*
+
+
 RUN cp $HOME/tmp/rhq-server.properties /opt/jon/jon-server-3.2.0.GA/bin/rhq-server.properties; mv $HOME/tmp/pgpass $HOME/.pgpass; chmod 0600 $HOME/.pgpass; mv $HOME/tmp/startJON.sh $HOME; chmod +x $HOME/startJON.sh;
 RUN chown -R postgres:postgres $HOME
 
@@ -63,7 +62,7 @@ RUN $PGINST/bin/pg_ctl start -w -D $PGDATA && \
 
 
 USER root
-RUN cp $HOME/tmp/pg_hba.conf /var/lib/pgsql/9.3/data/pg_hba.conf
+RUN cp $HOME/tmp/pg_hba.conf $PGDATA/pg_hba.conf
 
 #############################################
 # Cleanup
@@ -76,8 +75,8 @@ RUN cp $HOME/tmp/pg_hba.conf /var/lib/pgsql/9.3/data/pg_hba.conf
 # RUN service postgresql-9.3 start; /opt/jon/jon-server-3.2.0.GA/bin/rhqctl install --start  
 
 EXPOSE 7080
-
-CMD $HOME/startJON.sh
+VOLUME ["/var/lib/pgsql/9.3/jon-data","/opt/jon"]
+ENTRYPOINT $HOME/startJON.sh
 
 # Build command -> docker build --rm -t psteiner/jon .
 # run command -> docker run  -p 7080:7080 -h jon --name jon -d psteiner/jon
