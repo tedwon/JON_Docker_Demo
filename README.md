@@ -33,6 +33,7 @@ Demo-Script
 
 To support an easy usage of the demo, I provided a script to manage the demo-environment
 
+
 * `demo start_JON` to start the Red Hat JBoss Operations Server
 
 * `demo start_standalone` to start Red Hat JBoss EAP in standalone mode
@@ -42,3 +43,7 @@ To support an easy usage of the demo, I provided a script to manage the demo-env
 * `demo stop` to stop the environment
 
 * `demo cleanup` to remove all stopped images and remove these ugly `<none>`images
+
+JON Login
+---------
+Use rhqadmin as username and password to login into the JON management console.

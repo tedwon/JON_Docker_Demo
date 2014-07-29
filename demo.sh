@@ -14,7 +14,7 @@ function stopall {
 
 function startingServer {
   echo Starting JON server
-  docker run  -p 7080:7080 -h jon --name jon -d psteiner/jon > /dev/null
+  docker run -p 7080:7080 -h jon --name jon -d psteiner/jon > /dev/null
 }
 
 function startingAgent {
@@ -24,11 +24,11 @@ function startingAgent {
 
 function startingManagedEAP {
    i=1
-   while [ $i -le 3 ]
+   while [ $i -le 1 ]
    do
      servername='eapStandalone'$i
      echo Starting managedEAP with servername $servername
-     docker run --link jon:jon -h $servername  -d psteiner/managed_eap > /dev/null
+     docker run -p 8888:8080 --link jon:jon -h $servername  -d psteiner/managed_eap
      let i=$i+1
    done
 }
@@ -48,6 +48,10 @@ function startingDomainServer {
 function startingDomainSlave {
 	echo "Starting domain host"	
 	docker run --link jon:jon -h slave --name slave --link master:master -d wrichter/managed_eap62cluster_slave > /dev/null
+}
+
+function enterJON {
+        docker run -i -t -v /tmp/docker:/tmp/host --name enter-jon --volumes-from jon centos:centos6 /bin/bash
 }
 
 case "$1" in
@@ -118,8 +122,11 @@ stop)
 		exit 1
 	esac
 	;;
+enter-jon)
+        enterJON
+        ;;
 *)
-	echo "usage ${NAME} (cleanup|start_JON|start_standalone|start_domain|stop)"
+	echo "usage ${NAME} (cleanup|start_JON|start_standalone|start_domain|stop|enter-jon)"
 	exit 1
 	;;
 esac
