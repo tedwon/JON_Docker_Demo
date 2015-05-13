@@ -4,12 +4,14 @@ Red Hat JBoss Operations Network - JON Server
 Building the Docker image
 -------------------------
 
-To be able to build the image, you will have to download the product and the Red Hat JBoss EAP plugin pack.
+To be able to build the image, you will have to download the product, update and the Red Hat JBoss EAP plugin pack.
 You will find them at:
 
-* [Red Hat JBoss Operation Network V3.2](http://www.jboss.org/products/operationsnetwork/resources/)
+* [Red Hat JBoss Operation Network V3.3](https://access.redhat.com/jbossnetwork/restricted/softwareDetail.html?softwareId=34143&product=em&version=3.3&downloadType=distributions)
 
-* [Red Hat JBoss Operation Network EAP Plugins](https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?product=jon.eap&downloadType=distributions)
+* [Red Hat JBoss Operation Network V3.3 u2](https://access.redhat.com/jbossnetwork/restricted/softwareDetail.html?softwareId=37793&product=em&version=3.3&downloadType=patches)
+
+* [Red Hat JBoss Operation Network EAP Plugins](https://access.redhat.com/jbossnetwork/restricted/softwareDetail.html?softwareId=34153&product=jon.eap&version=&downloadType=distributions)
 
 Please note, that you might have to register with the Red Hat customer portal to access the downloads.
 
@@ -17,13 +19,22 @@ After having downloaded the two zip-files, place them into the `JON_Docker_Demo/
 ```
 docker build --rm -t psteiner/jon .
 ```
+Or simply
+```
+./build.sh
+```
+
 
 Starting the Docker image
 -------------------------
 
 To start the image, please us the following command
 ```
-docker run  -p 7080:7080 -h jon --name jon -d psteiner/jon
+docker run  -p 7080:7080 -h jon --name jon psteiner/jon
+```
+Or simply
+```
+./run.sh
 ```
 
 This will do the following things:
@@ -41,7 +52,6 @@ This will do the following things:
 
  How the image works
  -------------------
- The `Dockerfile` is designed in a way that at every new start of a container, the JON installation is started.
- This brings you a fresh environment at every new start.
+ The `Dockerfile` is designed so that the installation is finalized when first starting the container. Thereafter starting or stopping will simply start or stop JON, keeping your data.
 
  If you want it any other way, please feel free to create a pull-request.
