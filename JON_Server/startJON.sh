@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RHQ_SERVER_HOME="/opt/jon/jon-server-3.2.0.GA"
+RHQ_SERVER_HOME="/opt/jon/jon-server-3.3.0.GA"
 
 service postgresql-9.3 start
 
