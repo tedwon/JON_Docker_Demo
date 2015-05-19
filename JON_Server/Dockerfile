@@ -8,6 +8,12 @@ ENV RHQ_JAVA_HOME /usr/lib/jvm/jre
 ENV PGDATA /var/lib/pgsql/9.3/jon-data
 ENV PGINST /usr/pgsql-9.3
 ENV HOME /home/postgres
+ENV TMP $HOME/tmp
+ENV JON_BASE /opt/jon
+ENV JON_PLUGINS jon-plugin-pack-eap-3.3.0.GA
+ENV JON_SERVER jon-server-3.3.0.GA
+ENV JON_SERVER_UPDATE jon-server-3.3.0.GA-update-02
+ENV RHQ_SERVER_HOME $JON_BASE/$JON_SERVER
 
 # Update the system
 RUN yum -y update;yum clean all
@@ -36,22 +42,20 @@ RUN usermod -d $HOME postgres
 
 
 # Copy local artifacts to docker tmp-directory
-RUN mkdir $HOME; mkdir $HOME/tmp
-ADD . $HOME/tmp
+RUN mkdir $HOME; mkdir $TMP
+ADD . $TMP
 
 RUN echo "export RHQ_JAVA_HOME=\"/usr/lib/jvm/jre\" " >> /etc/profile
 
-RUN unzip $HOME/tmp/jon-server*.zip -d /opt/jon;
-RUN unzip $HOME/tmp/jon-plugin-pack-eap-3.2.0.GA.zip -d $HOME/tmp; rm $HOME/tmp/jon-plugin-pack-eap-3.2.0.GA.zip; cp $HOME/tmp/jon-plugin-pack-eap-3.2.0.GA/* opt/jon/jon-server-3.2.0.GA/plugins/
-# RUN unzip $HOME/tmp/jon-plugin-pack-jdg-3.2.0.GA.zip -d $HOME/tmp; rm $HOME/tmp/jon-plugin-pack-jdg-3.2.0.GA.zip; cp $HOME/tmp/jon-plugin-pack-jdg-3.2.0.GA/* opt/jon/jon-server-3.2.0.GA/plugins/
-RUN rm -rf $HOME/tmp/jon-plugin*
+# Unpack JON into RHQ_SERVER_HOME
+RUN unzip $TMP/'jon-server*.zip' -d $JON_BASE;
+RUN unzip $TMP/$JON_PLUGINS.zip -d $TMP; rm $TMP/$JON_PLUGINS.zip; cp $TMP/$JON_PLUGINS/* $RHQ_SERVER_HOME/plugins/
 
-
-RUN cp $HOME/tmp/rhq-server.properties /opt/jon/jon-server-3.2.0.GA/bin/rhq-server.properties; mv $HOME/tmp/pgpass $HOME/.pgpass; chmod 0600 $HOME/.pgpass; mv $HOME/tmp/startJON.sh $HOME; chmod +x $HOME/startJON.sh;
+RUN cp $TMP/rhq-server.properties $RHQ_SERVER_HOME/bin/rhq-server.properties; mv $TMP/pgpass $HOME/.pgpass; chmod 0600 $HOME/.pgpass; mv $TMP/startJON.sh $HOME; chmod +x $HOME/startJON.sh;
 RUN chown -R postgres:postgres $HOME
 
 #############################################
-# Create database for BPM-Suite BAM usage
+# Create database for JON server
 #############################################
 USER postgres
 
@@ -62,17 +66,14 @@ RUN $PGINST/bin/pg_ctl start -w -D $PGDATA && \
 
 
 USER root
-RUN cp $HOME/tmp/pg_hba.conf $PGDATA/pg_hba.conf
+RUN cp $TMP/pg_hba.conf $PGDATA/pg_hba.conf
 
 #############################################
 # Cleanup
 #############################################
-# RUN rm -rf $HOME/tmp
+RUN rm -rf $TMP
 
-#############################################
-# Trigger installation of JON
-#############################################
-# RUN service postgresql-9.3 start; /opt/jon/jon-server-3.2.0.GA/bin/rhqctl install --start  
+
 
 EXPOSE 7080
 VOLUME ["/var/lib/pgsql/9.3/jon-data","/opt/jon"]

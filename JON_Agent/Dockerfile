@@ -8,7 +8,7 @@ USER root
 ##############################################
 # Update the system and Install necessary RPMs
 ##############################################
-RUN yum -y update; yum -y install java-1.7.0-openjdk java-1.7.0-openjdk-devel; yum clean all
+RUN yum -y update; yum -y install java-1.7.0-openjdk java-1.7.0-openjdk-devel unzip; yum clean all
 
 ##############################################
 # Set required environment variables
@@ -16,7 +16,7 @@ RUN yum -y update; yum -y install java-1.7.0-openjdk java-1.7.0-openjdk-devel; y
 ENV HOME /home/jbosseap
 ENV JAVA_HOME /usr/lib/jvm/jre
 ENV RHQ_JAVA_HOME /usr/lib/jvm/jre
-ENV INSTALL_FILE $HOME/tmp/rhq-enterprise-agent-4.9.0.JON320GA.jar
+ENV INSTALL_FILE $HOME/tmp/rhq-enterprise-agent-4.12.0.JON330GA.jar
 
 ##############################################
 # Set root password
@@ -34,13 +34,16 @@ ADD . $HOME/tmp/
 ##############################################
 RUN java -jar $INSTALL_FILE --install=$HOME/jon; rm $INSTALL_FILE
 
+# update
+RUN unzip $HOME/tmp/jon-server-3.3-update-*.zip -d $HOME/jon;
+RUN $HOME/jon/jon-server-3.3.0.GA-update-02/apply-updates.sh $HOME/jon/rhq-agent/
+
 
 ##################################################
 # Now lets create a user give the files to the user
 ##################################################
 RUN useradd -m -d /home/jbosseap -p jbosseap jbosseap 
 RUN chown -R jbosseap:jbosseap $HOME; chmod u+x $HOME/tmp/*.sh
-
 
 ##################################################
 # The masterControlScript needs to run as root
