@@ -19,7 +19,7 @@ Otherwise you will find them at:
 
 Please note, that you might have to register with the Red Hat customer portal to access the downloads.
 
-After having downloaded the zip-file, please unzip it into any temporary directory and copy `/modules/org/rhq/server-startup/main/deployments/rhq.ear/rhq-downloads/rhq-agent/rhq-enterprise-agent-4.12.0.JON320GA.jar` into the `JON_Docker_Demo/JON_Agent` directory.
+After having downloaded the zip-file, please unzip it into any temporary directory and copy `/modules/org/rhq/server-startup/main/deployments/rhq.ear/rhq-downloads/rhq-agent/rhq-enterprise-agent-4.12.0.JON330GA.jar` into the `JON_Docker_Demo/JON_Agent` directory.
 
 Then run
 ```
