@@ -12,7 +12,7 @@ ENV TMP $HOME/tmp
 ENV JON_BASE /opt/jon
 ENV JON_PLUGINS jon-plugin-pack-eap-3.3.0.GA
 ENV JON_SERVER jon-server-3.3.0.GA
-ENV JON_SERVER_UPDATE jon-server-3.3.0.GA-update-02
+ENV JON_SERVER_UPDATE jon-server-3.3.0.GA-update-06
 ENV RHQ_SERVER_HOME $JON_BASE/$JON_SERVER
 
 # Update the system
@@ -23,7 +23,7 @@ RUN yum -y update;yum clean all
 #
 # Code taken from: https://github.com/DataVirtualizationByExample/DVWorkshop
 ###########################################################################
-RUN yum -y install http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm
+RUN yum -y install http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-3.noarch.rpm
 RUN yum -y install postgresql93-server postgresql93-contrib sudo unzip java-1.7.0-openjdk java-1.7.0-openjdk-devel; yum clean all
 RUN echo PGDATA=$PGDATA > /etc/sysconfig/pgsql/postgresql-9.3
 RUN ["service","postgresql-9.3","initdb"]
