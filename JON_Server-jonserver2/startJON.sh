@@ -2,7 +2,7 @@
 
 RHQ_SERVER_HOME="/opt/jon/jon-server-3.3.0.GA"
 
-service postgresql-9.3 start
+# service postgresql-9.3 start
 
 if [ ! -f $RHQ_SERVER_HOME/is.installed ]; then
   $RHQ_SERVER_HOME/bin/rhqctl install

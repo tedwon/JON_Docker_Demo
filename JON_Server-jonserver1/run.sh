@@ -5,4 +5,4 @@
 #docker start jon
 # docker exec -it jon bash 
 
-docker run --rm --name jonserver1 -h jonserver1 -p 7081:7080 psteiner/jon-ha-jonserver1:3.3.11
+docker run --rm --name jonserver1 -h jonserver1 -p 7081:7080 -p 5432:5432 psteiner/jon-ha-jonserver1:3.3.11
